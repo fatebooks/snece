@@ -1,0 +1,169 @@
+html,body {
+    margin: 0;
+    padding: 0;
+}
+.title {
+    width: 100%;
+    height: 12%;
+    color: #FFFF00;
+    font-size: 30pt;
+    top: 5%;
+    text-align: center;
+    position: fixed;
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+    position:fixed;
+    z-index: -1;
+}
+.bg img {
+    width: 100%;
+    height: 100%;
+}
+
+.up_div {
+    position: fixed;
+    z-index: 10;
+    width: 96%;
+    top: 16%;
+    left: 2%;
+}
+
+.user_lists {
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+    display: none;
+    height: 190px;
+    overflow: hidden;
+    /*overflow-y:hidden*/
+}
+.stitle {
+    vertical-align: middle;
+    display: inline-block;
+    text-align: center;
+    width: 200px;
+}
+
+.stitle span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #FF0;
+    font-size: 22pt;
+    height: 100px;
+    line-height: 100px;
+}
+#btn_div {
+    width: 100px;
+    height: 130px;
+    position: absolute;
+/*    background: #000;
+    opacity: 0.3;*/
+    z-index: 100;
+    display: none;
+}
+
+.user {
+    width: 100px;
+    height: 140px;
+    margin: 50px 5px 0 5px;
+    /*border: solid #FFF 2px;  */
+    border-radius: 50%;
+    /*padding: 2px;  */
+    display: inline-block;
+    /*float: right;*/
+    vertical-align: middle;
+
+    -moz-box-sizing: border-box; /*Firefox3.5+*/
+    -webkit-box-sizing: border-box; /*Safari3.2+*/
+    -o-box-sizing: border-box; /*Opera9.6*/
+    -ms-box-sizing: border-box; /*IE8*/
+    box-sizing: border-box; /*W3C��׼(IE9+��Safari5.1+,Chrome10.0+,Opera10.6+������box-sizing��w3c��׼�﷨)*/
+}
+
+.user img {
+    width: 95px;
+    height: 95px;
+    padding: 2px;
+    border-radius: 50%;
+    border: solid #FFF 1px;
+}
+.user span {
+    color: #FFF;
+    font-weight: bold;
+    width: 100px;
+    display: block;
+    text-align: center;
+    margin: 4px auto;
+    overflow: hidden;
+}
+
+.btn_area {
+    position: fixed;
+    bottom: 5%;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+}
+.btn_nums {
+    color: #FFF;
+    font-size: 15pt;
+    margin: 10px;
+}
+.btn_nums input {
+    width: 40px;
+    text-align: center;
+}
+.btn input {
+    background: #0033FF;
+    color: #FF0;
+    font-size: 30px;
+    border: none;
+    width: 150px;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 8px;
+}
+.btn input:disabled {
+    color: #444;
+    background: #666666;
+}
+
+#preload {
+    display: none;
+}
+#count {
+    color: #FF0;
+    font-size: 20pt;
+}
+
+.tops1{
+    margin: 8px;
+    width: 100px;
+    height: 140px;
+    float: left;
+    text-align: center;
+}
+.tops1 img{
+    width: 95px;
+    height: 95px;
+    border-radius: 5px;
+}
+.tts1{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.bls{
+    background-color: aquamarine;
+}
+.scened{
+    font-size: 24px;
+    background-color: orange ;
+    border-radius: 8px;
+    padding: 5px;
+    position: absolute;
+    left: 30px;top:1px;
+}

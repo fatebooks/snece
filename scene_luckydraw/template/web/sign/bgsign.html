@@ -1,0 +1,39 @@
+{template 'common/header'}
+
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type='hidden' name='op' id='op' value='bgsign' />
+    <input type='hidden' name='sub' id='sub' value='bgsign' />
+    <input type='hidden' name='id' id='id' value='{$id}' />
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="up[name]" id="name" class="form-control" value="{$up['name']}" autocomplete="off" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">电话</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="up[phone]" id="name" class="form-control" value="{$up['phone']}" autocomplete="off" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">抽奖号</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="up[ld_id]" id="name" class="form-control" value="{$up['ld_id']}" autocomplete="off" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+        <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('up[image]',$up['image']);}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input name="submit" type="submit" value="提交" class="btn btn-primary span2" />
+        </div>
+    </div>
+</form>
+
+{template 'common/footer'}

@@ -1,0 +1,24 @@
+{template 'common/header'}
+
+
+<!--<div class="table-responsive">-->
+<table class="table ">
+    <caption class="h3 bg-info">{$rs['name']}({php echo ($money==1)?'红包抽奖':'商品抽奖'})</caption>
+    <tr class="active"><th>ID</th><th>姓名</th><th width="150px">微信昵称</th><th>头像</th><th>电话</th><th>奖项</th><th>中奖时间</th></tr>
+    {if $lists == true}
+    {loop $lists $index $item}
+    <tr class="active"><td>{$index}</td><td>{$item['name']}</td><td >{php echo base64_decode($item['wechat_name'])}</td><td><img class="img-rounded" width="80px"  src="{$item['url']}"></td><td>{$item['phone']}</td><td>{$item['text']}</td><td>{php echo date('Y-m-d H:i:s',$item['time'])}</td></tr>
+    {/loop}
+    {else}
+    <tr><td>
+        <div class="alert alert-info" role="alert">
+            <strong>暂无数据</strong>
+        </div>
+    </td>
+    </tr>
+    {/if}
+
+</table>
+{if $money==1}<a href="{php echo $this->createWebUrl('organizers',array('op'=>'wxinfo','id'=>$id));}" class="btn btn-info" onclick="return checkdel();">红包详情</a>{/if}
+<!--</div>-->
+{template 'common/footer'}

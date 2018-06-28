@@ -1,0 +1,22 @@
+{template 'common/header'}
+
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type='hidden' name='op' id='op' value='post' />
+    {if $count<=0}
+    <div class="alert alert-info" role="alert">
+        <strong>暂无数据</strong>
+    </div>
+    {else}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            {loop $rs $k $v}
+            <tr class="active">
+                <td width="70%"><a href="{php echo $this->createWebUrl('sign',array('op'=>'signinfo','id'=>$v['id']));}" class="">{$v['name']}({php echo date('Y-m-d',$v['timestamp']);})</a></td>
+            </tr>
+            {/loop}
+        </table>
+    </div>
+    {/if}
+
+</form>
+{template 'common/footer'}

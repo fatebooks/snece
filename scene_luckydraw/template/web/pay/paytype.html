@@ -1,0 +1,49 @@
+{template 'common/header'}
+<script>
+    function checkend() {
+        return confirm('你是否确定要删除此活动？\r\n此操作不可逆！');
+    }
+    //    function checkdel() {
+    //        return confirm('你是否确定要删除此活动？\r\n此操作不可逆！');
+    //    }
+    var refurl = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'0'));}';
+    var refall = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'1'));}';
+    function ref() {
+        var chk = $('#all').prop('checked');
+        if (chk) {
+            window.location.href = refall;
+        }else{
+            window.location.href = refurl;
+        }
+    }
+</script>
+<!--<label for="all"><input type="checkbox" id="all" onchange="ref()" {if $all}checked{/if}>显示所有</label>-->
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type='hidden' name='op' id='op' value='post' />
+    {if $count<=0}
+    <div class="alert alert-info" role="alert">
+        <strong>暂无数据</strong>
+    </div>
+    {else}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr><th>支付类型</th><th>名称</th><th></th><th></th><th></th></tr>
+            {loop $rs $k $v}
+            <tr class="active">
+                <td width="20%">{if $v['paytype']==1}微信支付{elseif $v['paytype']==2}支付宝支付{else}其他支付{/if}</td>
+                <td width="50%">{$v['name']}</td>
+                <td><a href="{php echo $this->createWebUrl('pay',array('op'=>($v['paytype']==1)?'wechatadd':'alipayadd','id'=>$v['id']));}" class="btn btn-info" onclick="return checkdel();">编辑</a></td>
+                <td><a href="{php echo $this->createWebUrl('pay',array('op'=>'del','id'=>$v['id']));}" class="btn btn-info" onclick="return checkend()">删除</a></td>
+                <td>{if !empty($v['use'])}<button class="btn btn-success">使用中</button>{else}<a href="{php echo $this->createWebUrl('pay',array('op'=>'use','id'=>$v['id']));}" class="btn btn-info">开启</a>{/if}</td>
+            </tr>
+            {/loop}
+        </table>
+    </div>
+    {/if}
+    <br>
+    <a href='{php echo $this->createWebUrl('pay',array('op'=>'wechatadd'));}' class="btn btn-info">微信支付</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='{php echo $this->createWebUrl('pay',array('op'=>'alipayadd'));}' class="btn btn-info">支付宝支付</a>
+    <br/>
+    <br/>
+</form>
+
+{template 'common/footer'}

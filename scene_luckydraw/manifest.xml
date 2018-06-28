@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[现场签到抽奖]]></name>
+		<identifie><![CDATA[scene_luckydraw]]></identifie>
+		<version><![CDATA[1.0.1]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[现场签到抽奖]]></ability>
+		<description><![CDATA[现场签到抽奖]]></description>
+		<author><![CDATA[]]></author>
+		<url><![CDATA[]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<supports>                             
+
+		</supports>
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+		<cover>
+			<entry title="活动管理" do="luckydraw" state="" direct="false" />
+		</cover>
+		<menu>
+			<entry title="现场活动设置" do="organizers" state="scene_luckydraw_organizers" direct="false"></entry>
+			<entry title="签到" do="sign" state="scene_luckydraw_sign"  direct="false"></entry>
+			<entry title="现场抽奖" do="draw" state="scene_luckydraw_draw" direct="false"></entry>
+			<entry title="支付设置" do="pay" state="scene_luckydraw_pay" direct="false"></entry>
+		</menu>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_draw` (
+  `id` int(11) NOT NULL,
+  `c_id` int(11) NOT NULL COMMENT '参与活动ID',
+  `url` varchar(255) DEFAULT NULL COMMENT '头像链接',
+  `text` varchar(255) DEFAULT NULL COMMENT '中奖名称',
+  `time` int(11) DEFAULT NULL COMMENT '中奖时间戳',
+  `item_id` varchar(255) DEFAULT NULL COMMENT '中奖ID',
+  `code` varchar(32) DEFAULT NULL COMMENT '较验码',
+  `isdel` tinyint(4) DEFAULT '0' COMMENT '是否作废',
+  `deltime` int(11) DEFAULT NULL COMMENT '作废时间',
+  `uid` int(11) DEFAULT NULL COMMENT '活动用户id',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '商品抽奖0，现金抽奖1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖数据表';
+
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_itemsnece` (
+  `id` int(11) NOT NULL,
+  `cid` int(11) NOT NULL,
+  `item` int(11) NOT NULL,
+  `money` decimal(10,2) NOT NULL,
+  `nums` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_organizers` (
+  `id` int(11) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '举办方名称',
+  `timestamp` int(11) DEFAULT NULL COMMENT '活动时间',
+  `sour` int(11) DEFAULT '0' COMMENT '用户数据来源',
+  `settings` text COMMENT '配置json数据',
+  `isend` bit(1) DEFAULT b'0' COMMENT '是否结束'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖设置表';
+
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_pay` (
+  `id` int(11) NOT NULL,
+  `uniacid` int(11) NOT NULL COMMENT '公众号编号',
+  `paytype` tinyint(2) DEFAULT NULL COMMENT '支付类型',
+  `set_up` text NOT NULL COMMENT '支付设置',
+  `createtime` int(11) NOT NULL COMMENT '创建时间',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '正常0，删除1',
+  `use` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_sign` (
+  `id` int(11) NOT NULL,
+  `c_id` int(11) NOT NULL COMMENT '参与活动ID',
+  `wechat_name` varchar(255) DEFAULT NULL COMMENT '微信名',
+  `name` varchar(50) DEFAULT NULL COMMENT '真实姓名',
+  `phone` varchar(15) DEFAULT NULL COMMENT '手机号码',
+  `ld_id` varchar(10) DEFAULT NULL COMMENT '抽奖号码',
+  `image` varchar(255) DEFAULT NULL COMMENT '微信头像或图片地址',
+  `openid` varchar(50) DEFAULT NULL COMMENT '微信openid',
+  `timestamp` int(11) DEFAULT NULL COMMENT '签到时间',
+  `datas` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='抽奖签到表';
+
+CREATE TABLE IF NOT EXISTS `ims_scene_luckydraw_wxmoney` (
+  `id` int(11) NOT NULL,
+  `cid` int(11) NOT NULL COMMENT '活动id',
+  `item` int(11) NOT NULL COMMENT '奖项id',
+  `did` int(11) NOT NULL COMMENT '中奖id',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `money` decimal(10,2) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `addtime` int(11) DEFAULT NULL COMMENT '新增时间',
+  `paytime` int(11) DEFAULT NULL COMMENT '红包发送时间',
+  `ordersn` varchar(50) DEFAULT NULL,
+  `order_id` varchar(50) DEFAULT NULL
+  `paytype` tinyint(4) DEFAULT NULL COMMENT '支付类型'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `ims_scene_luckydraw_draw`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `i_cid_text` (`c_id`,`text`),
+  ADD KEY `i_cid_itemid_isdel` (`c_id`,`item_id`,`isdel`);
+
+ALTER TABLE `ims_scene_luckydraw_itemsnece`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ims_scene_luckydraw_organizers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `i_id` (`id`),
+  ADD KEY `i_timestamp` (`timestamp`),
+  ADD KEY `i_uniacid` (`uniacid`);
+
+ALTER TABLE `ims_scene_luckydraw_pay`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ims_scene_luckydraw_sign`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `i_c_id` (`c_id`),
+  ADD KEY `i_c_id_openid` (`c_id`,`openid`);
+
+ALTER TABLE `ims_scene_luckydraw_wxmoney`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `ims_scene_luckydraw_draw`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ims_scene_luckydraw_itemsnece`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ims_scene_luckydraw_organizers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ims_scene_luckydraw_pay`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ims_scene_luckydraw_sign`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `ims_scene_luckydraw_wxmoney`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+]]></install>
+	<uninstall><![CDATA[
+DROP TABLE IF EXISTS `ims_scene_luckydraw_draw`;
+DROP TABLE IF EXISTS `ims_scene_luckydraw_itemsnece`;
+DROP TABLE IF EXISTS `ims_scene_luckydraw_organizers`;
+DROP TABLE IF EXISTS `ims_scene_luckydraw_sign`;
+DROP TABLE IF EXISTS `ims_scene_luckydraw_pay`;
+DROP TABLE IF EXISTS `ims_scene_luckydraw_wxmoney`;
+]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

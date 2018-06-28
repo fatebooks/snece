@@ -1,0 +1,117 @@
+{template 'common/header'}
+<div class="alert alert-success" role="alert">
+    <h2>微信支付</h2>
+</div>
+<form action="{php echo $this->createWebUrl('pay',array('op'=>'edit'));}" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <!--<input type='hidden' name='_op' id='op' value='post' />-->
+    <input type='hidden' name='id' value="{$rs['id']}" />
+    <input type='hidden' name='paytype' value='1' />
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付名称</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[name]" id="name" class="form-control" value="{$paydata['name']}"/>
+            <!--<span class="help-block">请输入举办方的名称以便于区分活动</span>-->
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付类型</label>
+        <div class="col-sm-9 col-xs-12">
+            <select name="settings[wechat_type]" class="form-control tpl-category-parent">
+                <option value='1' {if $paydata['wachat_type']==1}selected{/if}>微信支付</option>
+                <!--<option value='3' {if $settings['sour']==3}selected{/if}>测试数据</option>-->
+            </select>
+            <!--<input type="text" name="settings[wachat_type]"class="form-control" value="{$paydata['wachat_type']}" autocomplete="off" />-->
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">公众号(AppId)</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[appid]" class="form-control" value="{$paydata['appid']}"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">应用密钥(AppSecret)</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[appsecret]" class="form-control" value="{$paydata['appsecret']}" />
+            <span class="help-block">只有借用支付公众号绑定了系统或者支付目录和授权站点都是本站的设定,才需要填写此项</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付商户号(Mch_Id)</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[mch_id]" class="form-control" value="{$paydata['mch_id']}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付密钥(APIKEY)</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[apikey]" class="form-control" value="{$paydata['apikey']}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">CERT证书文件</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="file" name="cert_file" class="form-control" />
+            {if !empty($paydata['cert_file'])}
+            <span class='label label-success'>已上传</span>
+            {else}
+            <span class='label label-danger'>未上传</span>
+            {/if}
+            <span class="help-block">下载证书 cert.zip 中的 apiclient_cert.pem 文件</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">ROOT文件</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="file" name="root_file" class="form-control" />
+            {if !empty($paydata['root_file'])}
+            <span class='label label-success'>已上传</span>
+            {else}
+            <span class='label label-danger'>未上传</span>
+            {/if}
+            <span class="help-block">下载证书 cert.zip 中的 rootca.pem 文件</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">KEY密钥文件</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="file" name="key_file" class="form-control" />
+            {if !empty($paydata['key_file'])}
+            <span class='label label-success'>已上传</span>
+            {else}
+            <span class='label label-danger'>未上传</span>
+            {/if}
+            <span class="help-block">下载证书 cert.zip 中的 apiclient_key.pem 文件</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input id="submit" type="submit" value="{$submittext}" class="btn btn-primary span2" />
+        </div>
+    </div>
+</form>
+{template 'common/footer'}
+<script>
+    $(function() {
+        $('#submit').click(function() {
+            if($(this).attr('value')=='修改'){
+                var r=confirm("如果有文件上传需要全部重新上传");
+                if (r==true)
+                {
+                    return true;
+                } else{
+                    return false;
+                }
+            }
+
+//            var d = {};
+//            var t = $('form').serializeArray();
+//            $.each(t, function() {
+//                d[this.name] = this.value;
+//            });
+//            alert(JSON.stringify(d));
+        });
+    });
+</script>

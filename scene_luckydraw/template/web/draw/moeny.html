@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{$basedir}css/main.css" />
+    <title>红包页面</title>
+    <script type="text/javascript">
+        var get_users_url = '{php echo $this->createWebUrl('organizers',array('op'=>'getuserlist','id'=>$id));}';  //获取用户数据链接
+        var get_sets_url = '{php echo $this->createWebUrl('organizers',array('op'=>'getsetting','id'=>$id));}';          //获取奖项数据链接
+        var get_winter_url = '{php echo $this->createWebUrl('organizers',array('op'=>'getwinner','id'=>$id));}';
+        var post_url = '{php echo $this->createWebUrl('organizers',array('op'=>'winner','id'=>$id));}';                //接收获奖信息数据链接
+        var set_money_url ='{php echo $this->createWebUrl('organizers',array('op'=>'money','id'=>$id));}'; //抽奖信息录入
+        var set_activity_url ='{php echo $this->createWebUrl('organizers',array('op'=>'activitys','id'=>$id));}';
+        //        var rept_win = {if $settings['rept_win']}true{else}false{/if};                      //是否允许重复中奖
+        var disp_type = '{$settings['disp']}';                     //中奖显示数据类型（与用户数据返回中的匹配）
+        var empty_url = '{if $settings['drawbg']}{$settings['drawbg']}{else}images/other/wait.jpg{/if}';    //如果无头像，显示的图片s
+
+        var basedir = '{$basedir}';
+        var defaultimg = '{if $settings['drawimg']}{$attenturl}{$settings['drawimg']}{else}{$basedir}images/other/wait.jpg{/if}';
+        var c_id = '{$id}';
+    </script>
+    <script type="text/javascript" src="{$basedir}js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="{$basedir}js/jquery.md5.js"></script>
+    <script type="text/javascript" src="{$basedir}js/jquery.base64.js"></script>
+    <script type="text/javascript" src="{$basedir}js/functions.js"></script>
+    <script type="text/javascript" src="{$basedir}js/dump_src.js"></script>
+    <script type="text/javascript" src="{$basedir}js/mains.js?v=2.2"></script>
+    <!--<script type="text/javascript" src="{$basedir}layer/layer.js"></script>-->
+    <link rel="stylesheet" href="{$basedir}layui/css/layui.css">
+    <script src="{$basedir}layui/layui.all.js"></script>
+
+</head>
+<body>
+<div class="bg"><img src="{if $settings['drawbg']}{$attenturl}{$settings['drawbg']}{else}{$basedir}background/11.jpg{/if}"></div>
+<div class="title">{$title}{$a}</div>
+<div class="up_div" id="main">
+</div>
+<div class="btn_area">
+    <!--<div class="btn_nums">抽奖数量：<input type="text" id="nums" value="3"></div>-->
+    <div class="btn"><input type="button" id="btn" value="开始" disabled="disabled" ><input type="button" id="next" value="下一项" disabled="disabled"><div id="test1"></div><span id="count">剩余人数：<a>0</a></span></div>
+</div>
+<div id="btn_div"></div>
+
+<script>
+    $('.bg').click(function(){
+        $('#layui-layer1').show()
+    })
+</script>
+</body>
+</html>

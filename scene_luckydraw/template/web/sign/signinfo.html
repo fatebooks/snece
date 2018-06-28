@@ -1,0 +1,45 @@
+{template 'common/header'}
+
+<div class="alert alert-success" role="alert">
+    <strong>举办方：</strong>{$settings['name']}
+    &nbsp;&nbsp;<strong>时间：</strong>{$settings['date']}
+    &nbsp; &nbsp;<strong>数据来源：</strong>{if $settings['sour'] == 0}
+    后台导入
+    {elseif $settings['sour'] == 1}
+    签到领取抽奖号
+    {elseif $settings['sour'] == 2}
+    微信扫码
+    {else}
+        保密
+    {/if}
+</div>
+
+    <table class="table table-hover">
+
+         <tr class="success"><th>请选择用户数据文件（该文件是在下载模板的基础上修改而来</th><th></th><th></th><th></th><th></th><th></th></tr>
+        <tr><form action="{php echo $this->createWebUrl('sign',array('op'=>'upload','id'=>$id));}" method="post" enctype="multipart/form-data"><td><input type="file" class="file" name="file"></td><td><input type="submit" value="导入" class="btn btn-info"></td>
+            <td></td></form>
+            <td><a href="{php echo $this->createWebUrl('sign',array('op'=>'clear','id'=>$id));}" class="btn btn-info">清空数据</a></td>
+            <td><a href="{php echo $this->createWebUrl('sign',array('op'=>'down','id'=>$id));}" class="btn btn-info">下载模板</a></td>
+            <td><a href="{php echo $this->createWebUrl('sign',array('op'=>'scavenging','id'=>$id));}" class="btn btn-info">微信签到页面</a></td></tr>
+    </table>
+<!--<div class="table-responsive">-->
+<table class="table ">
+    <caption class="h3 bg-info">签到记录</caption>
+    <tr class="active"><th>ID</th><th>姓名</th><th width="150px">微信昵称</th><th>头像</th><th>电话</th><th>抽奖号</th><th>签到时间</th><th>支付宝账号</th><th>支付宝姓名</th></tr>
+    {if $lists == true}
+    {loop $lists $index $item}
+    <tr class="active"><td>{$index}</td><td>{$item['name']}</td><td >{php echo base64_decode($item['wechat_name'])}</td><td><img class="img-rounded" width="80px"  src="{$item['image']}"></td><td>{$item['phone']}</td><td>{if empty($item['ld_id'])}--{else}{$item['ld_id']}{/if}</td><td>{php echo date('Y-m-d H:i:s',$item['timestamp'])}</td><td>{$item['datas']['alinumber']}</td><td>{$item['datas']['alirealname']}</td></tr>
+    {/loop}
+    {else}
+    <tr><td>
+    <div class="alert alert-info" role="alert">
+        <strong>暂无数据</strong>
+    </div>
+    </td>
+    </tr>
+    {/if}
+
+</table>
+<!--</div>-->
+{template 'common/footer'}

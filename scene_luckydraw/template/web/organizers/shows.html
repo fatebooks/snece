@@ -1,0 +1,136 @@
+{template 'common/header'}
+<form action="{php echo $this->createWebUrl('organizers',array('op'=>'edit'));}" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <!--<input type='hidden' name='_op' id='op' value='post' />-->
+    <input type='hidden' name='id' id='id' value='{$id}' />
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">现场活动举办方</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[name]" id="name" class="form-control" value="{$settings['name']}" autocomplete="off" />
+            <span class="help-block">请输入举办方的名称以便于区分活动</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动时间</label>
+
+        <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_date('settings[date]',$settings['date']);}
+            <span class="help-block">仅用于排序，无其它用途</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">用户数据来源</label>
+
+        <div class="col-sm-9 col-xs-12">
+            <select name="settings[sour]" class="form-control tpl-category-parent">
+                <option value='2' {if $settings['sour']==2}selected{/if}>微信扫码</option>
+                <option value='0' {if $settings['sour']==0}selected{/if}>后台导入</option>
+                <option value='1' {if $settings['sour']==1}selected{/if}>签到领取抽奖号</option>
+                <!--<option value='3' {if $settings['sour']==3}selected{/if}>测试数据</option>-->
+            </select>
+            <span class="help-block">抽奖用户数据来源：0 后台导入用户数据/1 用户签到领取抽奖号/2 用户扫码签到留下相关信息(开放式，可能一个人有多个中奖机会)/3 后台测试数据</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">允许重复中奖</label>
+
+        <div class="col-sm-9 col-xs-12">
+            <!--<label for="rpt_y" class="checkbox-inline">-->
+                <!--<input type="radio"  {if $settings['rept_win']}checked="checked"{/if} name="settings[rept_win]" value="1" id="rpt_y" /> 允许-->
+            <!--</label>-->
+            <label for="rpt_n" class="checkbox-inline">
+                <input type="radio"  {if !$settings['rept_win']}checked="checked"{/if} name="settings[rept_win]" value="0" id="rpt_n" /> 禁止
+            </label>
+            <span class="help-block">允许：用户中奖后仍然可能中奖。禁止：用户中奖后直接删除用户，不可能再中奖。</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">抽奖显示内容</label>
+        <div class="col-sm-9 col-xs-12">
+            <select name="settings[disp]" class="form-control tpl-category-parent">
+                <option value='name' {if ((!empty($settings['disp'])) || ($settings['disp']=='name'))}selected{/if}>姓名</option>
+                <option value='wechat_name' {if $settings['disp']=='wechat_name'}selected{/if}>微信昵称</option>
+                <option value='phone' {if $settings['disp']=='phone'}selected{/if}>手机号</option>
+                <option value='ld_id' {if $settings['disp']=='ld_id'}selected{/if}>抽奖号</option>
+            </select>
+            <span class="help-block">抽奖时图片下方显示的内容，请确认选择的项目，签到时会填写，否则可能会无法正常抽奖。如果有重复的，需要用其他资料进行验证。</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">隐藏奖项</label>
+        <div class="col-sm-9 col-xs-12">
+            <label for="hideall" class="checkbox-inline">
+                <input id="hideall" type="radio" name="settings[hideall]" {if $settings['hideall']}checked{/if} value="1">全部隐藏
+            </label>
+            <label for="hideall_0" class="checkbox-inline">
+                <input id="hideall_0" type="radio" name="settings[hideall]" {if !$settings['hideall']}checked{/if} value="0">隐藏最早
+            </label>
+            <span class="help-block">当抽奖项过多时是否隐藏所有奖项：选择时当高度不足时会隐藏所有已开奖项。未选择时当高度不足时会隐藏最早的奖项。</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">签到背景</label>
+        <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('settings[signbg]',$settings['signbg']);}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">抽奖背景</label>
+        <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('settings[drawbg]',$settings['drawbg']);}
+        </div>
+    </div>
+    <!--    <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">抽奖标题图片</label>
+            <div class="col-sm-9 col-xs-12">
+                {php echo tpl_form_field_image('settings[drawpic]',$settings['drawpic']);}
+                <span class="help-block">抽奖标题文字与抽奖标题图片二选一，如果两者都设置使用抽奖标题图片。</span>
+            </div>
+        </div>-->
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">抽奖标题文字</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[drawtitle]" class="form-control" value="{$settings['drawtitle']}" autocomplete="off" />
+            <span class="help-block">抽奖标题文字与抽奖标题图片二选一，如果两者都设置使用抽奖标题图片。</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">默认头像</label>
+        <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('settings[drawimg]',$settings['drawimg']);}
+            <span class="help-block">当用户没有头像时显示的图片。不设置显示微信默认头像。</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">奖项设置</label>
+        <div class="col-sm-9 col-xs-12">
+            <textarea class="form-control" rows="3" name="settings[items]">{if empty($settings['items'])}1,一等奖,1{else}{$settings['items']}{/if}</textarea>
+            <span class="help-block">请使用回车键分隔奖项设置，每行一个奖项中内容分别为：奖项ID,奖项名称,数量;奖项ID不能相同</span>
+        </div>
+    </div>
+    <!--<div class="form-group">-->
+        <!--<label class="col-xs-12 col-sm-3 col-md-2 control-label">内定设置</label>-->
+        <!--<div class="col-sm-9 col-xs-12">-->
+            <!--<textarea class="form-control" rows="3" name="settings[cheats]">{$settings['cheats']}</textarea>-->
+            <!--<span class="help-block">请使用回车键分隔内定奖项设置，不必为每个奖项设置，未设置即为无内定，每行一个奖项中内容分别为：奖项ID,中奖人员1,中奖人员2,……<br>中奖人员信息请与抽奖显示内容设置成一致，否则将会自动作废。</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input name="submit" type="submit" value="{$submittext}" class="btn btn-primary span2" />
+        </div>
+    </div>
+</form>
+{template 'common/footer'}
+<script>
+    $(function() {
+        $('#submit').click(function() {
+            var d = {};
+            var t = $('form').serializeArray();
+            $.each(t, function() {
+                d[this.name] = this.value;
+            });
+            alert(JSON.stringify(d));
+        });
+    });
+</script>

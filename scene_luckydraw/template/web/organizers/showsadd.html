@@ -1,0 +1,67 @@
+{template 'common/header'}
+<script>
+    function checkend() {
+        return confirm('你是否确定要结束此活动？\r\n此操作不可逆！');
+    }
+//    function checkdel() {
+//        return confirm('你是否确定要删除此活动？\r\n此操作不可逆！');
+//    }
+    var refurl = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'0'));}';
+    var refall = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'1'));}';
+    function ref() {
+        var chk = $('#all').prop('checked');
+        if (chk) {
+            window.location.href = refall;
+        }else{
+            window.location.href = refurl;
+        }
+    }
+</script>
+<label for="all"><input type="checkbox" id="all" onchange="ref()" {if $all}checked{/if}>显示所有</label>
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type='hidden' name='op' id='op' value='post' />
+    {if $count<=0}
+    <div class="alert alert-info" role="alert">
+        <strong>暂无数据</strong>
+    </div>
+    {else}
+    <div class="table-responsive">
+        <table class="table table-hover">
+        {loop $rs $k $v}
+
+            <tr class="active">
+                <td width="70%">{$v['name']}({php echo date('Y-m-d',$v['timestamp']);})</td>
+                <td><a href="{php echo $this->createWebUrl('organizers',array('op'=>'select','id'=>$v['id']));}" class="btn btn-info" onclick="return checkdel();">显示中奖名单</a></td>
+                <td><a href="{php echo $this->createWebUrl('organizers',array('op'=>'add','id'=>$v['id']));}" class="btn btn-info" onclick="return checkdel();">编辑</a></td>
+            {if $v['isend']==0}
+                <td><a href="{php echo $this->createWebUrl('organizers',array('op'=>'end','id'=>$v['id']));}" class="btn btn-info" onclick="return checkend()">结束</a></td>
+            {/if}
+                <td ><a href="{php echo $this->createWebUrl('organizers',array('op'=>'export','id'=>$v['id']));}" class="btn btn-info" target="_blank">导出中奖名单</a></td>
+            </tr>
+        {/loop}
+        </table>
+    </div>
+    {/if}
+    <br>
+    <a href='{php echo $this->createWebUrl('organizers',array('op'=>'add'));}' class="btn btn-info">新增</a>
+    <br/>
+    <br/>
+</form>
+
+<div class="alert alert-danger" role="alert">
+    <strong>流程说明：</strong>
+
+1. 新增现场活动： 现场活动设置=>新增<br/>
+2. 设置相应参数： 设置好用户数据来源、抽奖显示内容、奖项等等。<br/>
+3. 用户签到： 根据设置而定，<br/>
+        后台导入：  签到 => 下载模板 => 编辑模板 => 导入数据<br/>
+        签到领取抽奖号： 签到 => 后台签到 => 填写信息<br/>
+        微信扫码： 签到 => 微信签到页面 => 页面放到电子屏上 => 用户扫码关注签到<br/>
+4. 现场抽奖： 现场抽奖 => 页面放到电子屏上 => 开始抽奖 => 当前奖项无人领取点击中奖用户重新抽奖<br/>
+5. 发奖： 现场活动设置 => 导出中奖名单 => 逐一发奖<br/>
+6. 结束： 现场活动设置 => 结束 => 如果需要删除数据可使用 “删除”功能。<br/>
+    <br/>
+如果要使用“微信签到”建议使用认证服务号（或者使用微擎自带的借权功能），否则可能无法取到签到用户信息。<br/>
+如果有任何使用上的问题，可以通过QQ群：568059881或http:weixin.8wei.cc 进行联系。<br/>
+</div>
+{template 'common/footer'}

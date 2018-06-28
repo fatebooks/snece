@@ -1,0 +1,44 @@
+{template 'common/header'}
+<script>
+    function checkend() {
+        return confirm('你是否确定要结束此活动？\r\n此操作不可逆！');
+    }
+    function checkdel() {
+        return confirm('你是否确定要删除此活动？\r\n此操作不可逆！');
+    }
+    var refurl = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'0'));}';
+    var refall = '{$_W['siteroot']}web/{php echo $this->createWebUrl('organizers',array('all'=>'1'));}';
+    function ref() {
+        var chk = $('#all').prop('checked');
+        if (chk) {
+            window.location.href = refall;
+        }else{
+            window.location.href = refurl;
+        }
+    }
+</script>
+<label for="all"><input type="checkbox" id="all" onchange="ref()" {if $all}checked{/if}>显示所有</label>
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type='hidden' name='op' id='op' value='post' />
+    {if $count<=0}
+    <div class="alert alert-info" role="alert">
+        <strong>暂无数据</strong>
+    </div>
+    {else}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            {loop $rs $k $v}
+
+            <tr class="active">
+                <td width="70%"><a href="{php echo $this->createWebUrl('organizers',array('op'=>'add','id'=>$v['id']));}" class="">{$v['name']}({php echo date('Y-m-d',$v['timestamp']);})</a></td>
+            </tr>
+            {/loop}
+        </table>
+    </div>
+    {/if}
+    <br>
+    <a href='{php echo $this->createWebUrl('organizers',array('op'=>'add'));}' class="btn btn-info">新增</a>
+    <br/>
+    <br/>
+</form>
+{template 'common/footer'}

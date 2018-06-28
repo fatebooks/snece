@@ -1,0 +1,112 @@
+{template 'common/header'}
+<script type="text/javascript" src="{$basedir}js/jquery.base64.js"></script>
+<link rel="stylesheet" href="{$basedir}layui/css/layui.css">
+<script src="{$basedir}layui/layui.all.js"></script>
+<div class="alert alert-success" role="alert">
+    <h2>举办方：{$orgname['name']}</h2>
+</div>
+{if count($prozearr)<=0}
+<div class="alert alert-info" role="alert">
+    <strong>暂无数据</strong>
+</div>
+{else}
+<!--<form action="" method="post">-->
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>奖项id</th>
+        <th>奖项名称</th>
+        <th>奖项人数</th>
+        <th>奖项金额</th>
+    </tr>
+    </thead>
+    <tbody>
+    {if empty($resul)}
+    {loop $prozearr $index $item}
+    <tr class="aas">
+        <td>{$item['item']}<input type="hidden" name="item" value="{$item['item']}"></td>
+        <td>{$item['name']}<input type="hidden" name="name"></td>
+        <td>{$item['nums']}<input type="hidden" name="nums" value="{$item['nums']}"></td>
+        <td><input type="text" name="money" value="" min="0"></td>
+    </tr>
+    {/loop}
+    {else}
+    {loop $resul $index $item}
+    <tr class="aad">
+        <td>{$item['item']}<input type="hidden" name="id" value="{$item['id']}"></td>
+        <td>{$item['name']}</td>
+        <td>{$item['nums']}</td>
+        <td><input type="text" name="money" value="{$item['money']}" min="0"></td>
+    </tr>
+    {/loop}
+    {/if}
+    </tbody>
+</table>
+    <div class="checkbox">
+        <label>
+            <button onclick="submits()" class="btn btn-info">{$sub}</button>
+        </label>
+    </div>
+<!--</form>-->
+<script>
+    function submits() {
+        var arr=[];
+        if($('tr').hasClass("aad")){
+            $('.aad').each(function(i) {
+                var cput = $(this).find('input');
+                var brr = new Object();
+                brr[cput[0].getAttribute('name')] = $(this).find('input:first').val();
+                brr[cput[1].getAttribute('name')] = $(this).find('input:last').val();
+                arr.push(brr);
+            });
+        }else {
+            $('.aas').each(function(i){
+                var cput =  $(this).find('input');
+                var brr=new Object();
+                for (var i=0;i<cput.length;i++){
+                    if(i<3){
+                        if(i==1){
+                            brr['cid']="{$id}";
+                        }else{
+                            brr[cput[i].getAttribute('name')]=cput[i].getAttribute('value');
+                        }
+                    }else{
+                        brr[cput[3].getAttribute('name')]=$(this).find('input:last').val();
+                    }
+                }
+                arr.push(brr);
+            });
+        }
+        console.log(arr);
+       for (var x in arr){
+           var bools= parseFloat(arr[x]['money'])
+           if(!bools || bools<0){
+               alert('金额格式不对');
+               return ;
+           }
+           arr[x]['money']=bools.toFixed(2);
+       }
+        $.base64.utf8encode = true;
+        $.ajax({
+            type: "post",
+            url: "{php echo $this->createWebUrl('draw',array('op'=>'edits','id'=>$id));}",
+            dataType: "json",
+            data: {'ids':arr},
+            success: function(msg){
+                console.log(msg);
+                if(msg==1111) {
+                    location.href = "{php echo $this->createWebUrl('draw')}";
+                }else if(msg==2){
+                    layer.alert('红包已发送无法修改');
+                }else if(msg==3){
+                    layer.alert('未修改');
+                }else{
+                    layer.alert('奖项金额已录入失败')
+                }
+            }
+        });
+    }
+
+</script>
+{/if}
+{template 'common/footer'}

@@ -1,0 +1,126 @@
+{template 'common/header'}
+<div class="alert alert-info" role="alert">
+    <h2>支付宝支付</h2>
+</div>
+<form action="{php echo $this->createWebUrl('pay',array('op'=>'edit'));}" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <!--<input type='hidden' name='_op' id='op' value='post' />-->
+    <input type='hidden' name='id' value="{$rs['id']}" />
+    <input type='hidden' name='paytype' value='2' />
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付账户姓名</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[name]" id="name" class="form-control" value="{$paydata['name']}"/>
+            <span class="help-block">支付宝实名认证的名称(个人就填写个人姓名,企业就填写企业名称 , 要与支付宝上面的认证姓名一致)</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">合作伙伴身份（PID）</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[pid]" class="form-control" value="{$paydata['pid']}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付账号</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[pay_account]" class="form-control" value="{$paydata['pay_account']}"/>
+            <span class="help-block">支付宝账号 一般是 email</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">MD5密钥</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[md5key]" class="form-control" value="{$paydata['md5key']}" />
+            <span class="help-block">安全校验码(key)MD5密钥</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">应用ID</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[appid]" class="form-control" value="{$paydata['appid']}"/>
+            <span class="help-block">应用APPID</span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">应用公匙</label>
+        <div class="col-sm-9 col-xs-12">
+
+            {if !empty($paydata['publickey'])}
+            <input type="text" name="settings[publickey]" class="form-control"/>
+            <span class='label label-success'>已存在</span>
+            {else}
+            <input type="text" name="settings[publickey]" class="form-control"/>
+            <span class='label label-danger'>未添加</span>
+            {/if}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">应用私匙</label>
+        <div class="col-sm-9 col-xs-12">
+            {if !empty($paydata['privatekey'])}
+            <input type="text" name="settings[privatekey]" class="form-control"/>
+            <span class='label label-success'>已存在</span>
+            {else}
+            <input type="text" name="settings[privatekey]" class="form-control"/>
+            <span class='label label-danger'>未添加</span>
+            {/if}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[admin]" class="form-control" value="{$paydata['admin']}"/>
+            <span class="help-block">管理员姓名</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员账号</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[adminnumber]" class="form-control" value="{$paydata['adminnumber']}" />
+            <span class="help-block">管理员账号</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">打款管理员备注</label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="text" name="settings[remark]" class="form-control" value="{$paydata['remark']}" />
+        </div>
+    </div>
+    <div class="form-group">
+    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付宝转账手续费(1表示1%)</label>
+    <div class="col-sm-9 col-xs-12">
+        <input type="text" name="settings[cost]" class="form-control" value="{$paydata['cost']}" />
+        <span class="help-block">支付宝转账手续费</span>
+    </div>
+</div>
+    <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input name="submit" type="submit" value="{$submittext}" class="btn btn-primary span2" />
+        </div>
+    </div>
+</form>
+{template 'common/footer'}
+<script>
+    $(function() {
+        $('#submit').click(function() {
+//            if($(this).attr('value')=='修改'){
+//                var r=confirm("如果有文件上传需要全部重新上传");
+//                if (r==true)
+//                {
+//                    return true;
+//                } else{
+//                    return false;
+//                }
+//            }
+
+            var d = {};
+            var t = $('form').serializeArray();
+            $.each(t, function() {
+                d[this.name] = this.value;
+            });
+            alert(JSON.stringify(d));
+        });
+    });
+</script>

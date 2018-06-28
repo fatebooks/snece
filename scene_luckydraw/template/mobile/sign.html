@@ -1,0 +1,56 @@
+{template 'header'}
+<br>
+{if $sour==2}
+    {if $fans['nickname']}
+        {if $isok}
+<h4 align="center">{if $message}{if $image}<img src='{$image}' width='150px' /><br><br>
+            {/if}{$message}{else}已完成签到，你的签到信息为：<table class="table table-striped"><tr><td>姓名:</td><td>{$name}</td></tr><tr><td>电话:</td><td>{$phone}</td></tr><tr><td>支付宝账号:</td><td>{$ali['alinumber']}</td></tr>
+        <tr><td>支付宝姓名:</td><td>{$ali['alirealname']}</td></tr>{/if}</table></h4>
+        {else}
+        <form action="{php echo $this->createMobileUrl('sign',array('id'=>$id));}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+        <input type='hidden' name='op' id='op' value='post' />
+
+        <br>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">姓名</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" name="name" placeholder="">
+            </div>
+        </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">电话</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+                    <span class="help-block">仅用于抽奖时显示</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">支付宝账号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control"  name="data[alinumber]" placeholder="">
+                    <span class="help-block">仅用于发放红包</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">真实姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control"  name="data[alirealname]" placeholder="">
+                    <span class="help-block">仅用于发放红包</span>
+                </div>
+            </div>
+        <p align="center"><button class="btn btn-primary btn-lg" type="submit">提交</button></p>
+        </form>
+        {/if}
+    {else}
+        <div style="margin:25px 0;"><h4>请先关注这个微信号，然后点击下面的签到按钮！（由于要与微信服务器同步数据后才能识别你的身份，请关注后等一二分钟后再签到！）</h4></div>
+        <div style="width: 100%;">
+        <img src="{php echo tomedia('qrcode_'.$_W['acid'].'.jpg')}?time={php echo time()}" class="img-responsive img-thumbnail" width="80%" onerror="this.src='/app/resource/images/gw-wx.gif'" style="margin:0 auto;display:block;"/>
+        </div>
+        <div style="width: 100%;text-align:center;margin: 20px 0;">
+        <a class="btn btn-primary btn-lg" href='{php echo $this->createMobileUrl('sign',array('id'=>$id));}'>现在签到</a>
+        </div>
+    {/if}
+{else}
+    <h4>举办方未开启使用微信扫码进行抽奖。</h4>
+{/if}
+{template 'footer'}

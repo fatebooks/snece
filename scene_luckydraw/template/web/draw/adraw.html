@@ -1,0 +1,22 @@
+{template 'common/header'}
+{if $count<=0}
+<div class="alert alert-info" role="alert">
+    <strong>暂无数据</strong>
+</div>
+{else}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <tr><th>抽奖活动名称</th><th>抽奖类型一</th><th>抽奖类型二</th><th>红包编辑</th></tr>
+        {loop $rs $k $v}
+        <tr class="active">
+
+            <td width="70%">{$v['name']}({php echo date('Y-m-d',$v['timestamp']);})</td>
+            <td><a href="{php echo $this->createWebUrl('draw',array('op'=>'goods','id'=>$v['id']));}" class="btn btn-info">商品抽奖</a></td>
+            <td><a href="{php echo $this->createWebUrl('draw',array('op'=>'scene','id'=>$v['id']));}" class="btn btn-info">红包抽奖</a></td>
+            <td>{if $v['status']==1}<a href="{php echo $this->createWebUrl('draw',array('op'=>'add','id'=>$v['id']));}" class="btn btn-info">红包金额设置</a> {/if}</td>
+        </tr>
+        {/loop}
+    </table>
+</div>
+{/if}
+{template 'common/footer'}
